@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dior Lip Color Archive</title>
+  <style>
+    :root {
+      --bg: #f8f6f3;
+      --panel: #ffffff;
+      --text: #111111;
+      --muted: #6f6f6f;
+      --line: #dedbd6;
+      --shadow: 0 10px 30px rgba(0,0,0,.06);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Times New Roman", "Noto Serif TC", serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(248, 246, 243, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar {
+      max-width: 1200px;
+      margin: auto;
+      padding: 22px 24px 18px;
+    }
+
+    .brand {
+      text-align: center;
+      letter-spacing: .35em;
+      font-size: clamp(24px, 4vw, 42px);
+      margin-bottom: 18px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      margin-top: -8px;
+      margin-bottom: 18px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    input, select, button {
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--text);
+      padding: 12px 14px;
+      font-size: 14px;
+      border-radius: 999px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #111;
+    }
+
+    button {
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .fav-toggle.active {
+      background: #111;
+      color: #fff;
+      border-color: #111;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 26px 24px 60px;
+    }
+
+    .note {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .summary {
+      font-family: Arial, sans-serif;
+      margin: 10px 0 18px;
+      color: #333;
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: .2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    .swatch {
+      height: 150px;
+      position: relative;
+      border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+
+    .heart {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,.88);
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+      font-size: 20px;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .heart.saved {
+      background: #111;
+      color: #fff;
+    }
+
+    .info {
+      padding: 14px 14px 16px;
+    }
+
+    .shade-no {
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: .04em;
+    }
+
+    .shade-name {
+      margin-top: 4px;
+      font-size: 14px;
+    }
+
+    .series {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    .empty {
+      display: none;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    footer {
+      text-align: center;
+      padding: 0 20px 40px;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+    }
+
+    @media (max-width: 720px) {
+      .controls {
+        grid-template-columns: 1fr;
+      }
+      .brand {
+        letter-spacing: .2em;
+      }
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .swatch {
+        height: 125px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <div class="brand">DIOR LIP COLOR ARCHIVE</div>
+    <div class="subtitle">我的 Dior 口紅色號收藏與選色筆記</div>
+
+    <div class="controls">
+      <input id="searchInput" type="text" placeholder="搜尋色號、名稱或系列，例如 999 / 720 / Rouge Dior" />
+      <select id="seriesFilter">
+        <option value="all">全部系列</option>
+      </select>
+      <button id="favToggle" class="fav-toggle">♡ 我的收藏</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="note">
+    色票為螢幕顯示參考，實際口紅顏色會受到螢幕、亮度、原生唇色與現場光線影響；購買前仍建議到專櫃試色。
+  </div>
+
+  <div id="summary" class="summary"></div>
+  <section id="grid" class="grid"></section>
+  <div id="empty" class="empty">目前沒有符合條件的色號。</div>
+</main>
+
+<footer>
+  Personal reference only · Not affiliated with Dior
+</footer>
+
+<script>
+  // 你之後只要在這裡新增資料即可：
+  // { no: "色號", name: "名稱", series: "系列", color: "#HEX顏色" }
+  const lipsticks = [
+    { no: "999", name: "Iconic Red", series: "Rouge Dior", color: "#B11D2E" },
+    { no: "720", name: "Icône", series: "Rouge Dior", color: "#8E4048" },
+    { no: "100", name: "Nude Look", series: "Rouge Dior", color: "#A56F68" },
+    { no: "525", name: "Chérie", series: "Rouge Dior", color: "#B95A6B" },
+    { no: "219", name: "Rose Montaigne", series: "Rouge Dior", color: "#A95D67" },
+    { no: "434", name: "Promenade", series: "Rouge Dior", color: "#9B4B47" },
+    { no: "777", name: "Fahrenheit", series: "Rouge Dior", color: "#C63B36" },
+
+    { no: "418", name: "Beige Oblique", series: "Dior Addict", color: "#A75E55" },
+    { no: "525", name: "Chérie", series: "Dior Addict", color: "#B85B71" },
+    { no: "720", name: "Icône", series: "Dior Addict", color: "#8D3E4A" },
+    { no: "744", name: "Diorama", series: "Dior Addict", color: "#C04C53" },
+    { no: "976", name: "Be Dior", series: "Dior Addict", color: "#9F2E4A" },
+
+    { no: "200", name: "Forever Nude Touch", series: "Rouge Dior Forever", color: "#9E675F" },
+    { no: "458", name: "Forever Paris", series: "Rouge Dior Forever", color: "#B84455" },
+    { no: "558", name: "Forever Grace", series: "Rouge Dior Forever", color: "#A9475A" },
+    { no: "760", name: "Forever Glam", series: "Rouge Dior Forever", color: "#8B3442" },
+    { no: "999", name: "Forever Dior", series: "Rouge Dior Forever", color: "#B31E2B" }
+  ];
+
+  const grid = document.getElementById("grid");
+  const searchInput = document.getElementById("searchInput");
+  const seriesFilter = document.getElementById("seriesFilter");
+  const favToggle = document.getElementById("favToggle");
+  const summary = document.getElementById("summary");
+  const empty = document.getElementById("empty");
+
+  let favoritesOnly = false;
+  const saved = new Set(JSON.parse(localStorage.getItem("diorFavorites") || "[]"));
+
+  function keyOf(item) {
+    return `${item.series}__${item.no}__${item.name}`;
+  }
+
+  const seriesList = [...new Set(lipsticks.map(x => x.series))].sort();
+  seriesList.forEach(series => {
+    const option = document.createElement("option");
+    option.value = series;
+    option.textContent = series;
+    seriesFilter.appendChild(option);
+  });
+
+  function toggleFavorite(item) {
+    const key = keyOf(item);
+    if (saved.has(key)) saved.delete(key);
+    else saved.add(key);
+
+    localStorage.setItem("diorFavorites", JSON.stringify([...saved]));
+    render();
+  }
+
+  function render() {
+    const q = searchInput.value.trim().toLowerCase();
+    const selectedSeries = seriesFilter.value;
+
+    const filtered = lipsticks.filter(item => {
+      const matchesSearch =
+        item.no.toLowerCase().includes(q) ||
+        item.name.toLowerCase().includes(q) ||
+        item.series.toLowerCase().includes(q);
+
+      const matchesSeries =
+        selectedSeries === "all" || item.series === selectedSeries;
+
+      const matchesFav =
+        !favoritesOnly || saved.has(keyOf(item));
+
+      return matchesSearch && matchesSeries && matchesFav;
+    });
+
+    grid.innerHTML = "";
+
+    filtered.forEach(item => {
+      const card = document.createElement("article");
+      card.className = "card";
+
+      const key = keyOf(item);
+      const isSaved = saved.has(key);
+
+      card.innerHTML = `
+        <div class="swatch" style="background:${item.color}">
+          <button class="heart ${isSaved ? "saved" : ""}" aria-label="收藏">${isSaved ? "♥" : "♡"}</button>
+        </div>
+        <div class="info">
+          <div class="shade-no">${item.no}</div>
+          <div class="shade-name">${item.name}</div>
+          <div class="series">${item.series}</div>
+        </div>
+      `;
+
+      card.querySelector(".heart").addEventListener("click", () => toggleFavorite(item));
+      grid.appendChild(card);
+    });
+
+    summary.textContent =
+      favoritesOnly
+        ? `收藏中顯示 ${filtered.length} 支口紅`
+        : `目前顯示 ${filtered.length} 支口紅`;
+
+    empty.style.display = filtered.length === 0 ? "block" : "none";
+  }
+
+  searchInput.addEventListener("input", render);
+  seriesFilter.addEventListener("change", render);
+
+  favToggle.addEventListener("click", () => {
+    favoritesOnly = !favoritesOnly;
+    favToggle.classList.toggle("active", favoritesOnly);
+    favToggle.textContent = favoritesOnly ? "♥ 顯示收藏中" : "♡ 我的收藏";
+    render();
+  });
+
+  render();
+</script>
+</body>
+</html>
